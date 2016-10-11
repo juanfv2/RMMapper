@@ -11,7 +11,7 @@
 @implementation RMUser
 
 
-- (NSArray *)rm_excludedProperties
+- (NSArray *)rmExcludedProperties
 {
     return @[@"display"];
 }

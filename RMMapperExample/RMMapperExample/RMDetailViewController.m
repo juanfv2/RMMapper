@@ -40,7 +40,7 @@
                            self.room.currencyCode,
                            self.room.price];
     self.hostLabel.text = self.room.host.url;
-    self.certifiedLabel.text = [self.room.host.certified stringValue];
+    self.certifiedLabel.text = [NSString stringWithFormat:@"%@", self.room.host.certified ? @"true" : @"false"];
     
     NSLog(@"%@", [RMMapper dictionaryForObject:self.room]);
 }

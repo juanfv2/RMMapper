@@ -11,7 +11,7 @@
 
 @implementation RMItem
 
--(Class)rm_itemClassForArrayProperty:(NSString *)property {
+-(Class)rmItemClassForArrayProperty:(NSString *)property {
     if ([property isEqualToString:@"topping"]) {
         return [RMTopping class];
     }

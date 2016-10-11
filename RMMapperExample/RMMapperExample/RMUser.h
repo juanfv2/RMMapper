@@ -14,7 +14,7 @@
 
 @property (nonatomic, retain) NSNumber* id;
 @property (nonatomic, retain) NSString* display;
-@property (nonatomic, retain) NSNumber* certified;
+@property (nonatomic, assign) BOOL certified;
 @property (nonatomic, retain) NSString* url;
 
 @end

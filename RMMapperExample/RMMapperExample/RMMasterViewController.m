@@ -44,7 +44,7 @@
         self.rooms = [RMMapper mutableArrayOfClass:[RMRoom class]
                              fromArrayOfDictionary:responseJSONResult];
         
-        [defaults rm_setCustomObject:self.rooms forKey:@"SAVED_DATA"];
+        [defaults rmSetCustomObject:self.rooms forKey:@"SAVED_DATA"];
     }
     
     // Test different json to parse item inside an array to specified class

@@ -18,8 +18,8 @@
     // Retrieve excluded properties
     NSArray *excludedProperties = nil;
     
-    if ([self respondsToSelector:@selector(rm_excludedProperties)]) {
-        excludedProperties = [self performSelector:@selector(rm_excludedProperties)];
+    if ([self respondsToSelector:@selector(rmExcludedProperties)]) {
+        excludedProperties = [self performSelector:@selector(rmExcludedProperties)];
     }
     
     for (NSString* key in propertyDict) {
@@ -38,8 +38,8 @@
         // Retrieve excluded properties
         NSArray *excludedProperties = nil;
         
-        if ([self respondsToSelector:@selector(rm_excludedProperties)]) {
-            excludedProperties = [self performSelector:@selector(rm_excludedProperties)];
+        if ([self respondsToSelector:@selector(rmExcludedProperties)]) {
+            excludedProperties = [self performSelector:@selector(rmExcludedProperties)];
         }
         
         for (NSString* key in propertyDict) {

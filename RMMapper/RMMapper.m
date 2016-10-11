@@ -1,15 +1,8 @@
 #import "RMMapper.h"
+
 #import <objc/runtime.h>
 
-#ifdef DEBUG
-#   define RMMapperLog(__FORMAT__, ...) NSLog(__FORMAT__, ##__VA_ARGS__)
-#else
-#   define RMMapperLog(...) do {} while (0)
-#endif
-
-
 @implementation RMMapper
-
 
 static const char *getPropertyType(objc_property_t property) {
     const char *attributes = property_getAttributes(property);
@@ -41,7 +34,7 @@ static const char *getPropertyType(objc_property_t property) {
     return "";
 }
 
-#define excludedFrameworkPrefixes @[@"NS", @"UI", @"CL", @"CF", @"AB", @"CA", @"CI", @"CG"]
+#define excludedFrameworkPrefixes @[ @"NS", @"UI", @"CL", @"CF", @"AB", @"CA", @"CI", @"CG", /* swift */ @"d", @"q", @"Q", @"l", @"i", @"B", @"c" /* swift */ ]
 
 #pragma mark - Check if class type belong to Cocoa Framework
 
@@ -59,8 +52,8 @@ static const char *getPropertyType(objc_property_t property) {
     return @[@"observationInfo",@"hash",@"description",@"debugDescription",@"superclass"];
 }
 
-
 #pragma mark - Get properties for a class
+
 + (NSDictionary *)propertiesForClass:(Class)cls {
     if (cls == NULL) {
         return nil;
@@ -104,8 +97,8 @@ static const char *getPropertyType(objc_property_t property) {
     
     // Retrieve list of items to be excluded
     NSArray* excludeArray = nil;
-    if ([obj respondsToSelector:@selector(rm_excludedProperties)]) {
-        excludeArray = [obj rm_excludedProperties];
+    if ([obj respondsToSelector:@selector(rmExcludedProperties)]) {
+        excludeArray = [obj rmExcludedProperties];
     }
     
     Class cls = [obj class];
@@ -113,8 +106,8 @@ static const char *getPropertyType(objc_property_t property) {
     // Check object for conforming RMMappingKeyPathObject,
     // and if object conform this protocol, we get mapping for this class
     NSDictionary *dataKeysForProperties = nil;
-    if ([obj respondsToSelector:@selector(rm_dataKeysForClassProperties)]) {
-        dataKeysForProperties = [obj rm_dataKeysForClassProperties];
+    if ([obj respondsToSelector:@selector(rmDataKeysForClassProperties)]) {
+        dataKeysForProperties = [obj rmDataKeysForClassProperties];
     }
     
     // Retrieve property declared in class definition
@@ -171,17 +164,70 @@ static const char *getPropertyType(objc_property_t property) {
             
             // Init a child attribute with respective class
             Class objCls = NSClassFromString(propertyType);
-            id childObj = [[objCls alloc] init];
-            [RMMapper populateObject:childObj fromDictionary:value];
             
-            [obj setValue:childObj forKey:property];
+            Method theMethod = class_getClassMethod(objCls, @selector(initWithDictionary:context:));
+            id childObj;
+            
+            //@selector(initWithBy:)
+            
+            if (theMethod) {
+                childObj = [[objCls alloc] initWithDictionary: value context: [obj managedObjectContext]];
+            } else {
+                childObj = [[objCls alloc] init];
+            }
+
+            
+            if (childObj != nil) {
+                
+                [RMMapper populateObject:childObj fromDictionary:value];
+                
+                [obj setValue:childObj forKey:property];
+                
+            }
+            
         }
         
         // Else, set value for key
         else {
             // If the value is basic type and is not array, parse it directly to obj
             if (![value isKindOfClass:[NSArray class]]) {
-                [obj setValue:value forKey:property];
+
+                    if ([propertyType isEqualToString:@"NSNumber"]) {
+                        
+                        NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+                        f.numberStyle = NSNumberFormatterDecimalStyle;
+                        NSNumber *myNumber = [f numberFromString: [NSString stringWithFormat:@"%@", value ]];
+                        
+                        [obj setValue:myNumber forKey:property];
+                        
+                    } else if ([propertyType isEqualToString:@"d"]){
+                        
+                        [obj setValue: @([value doubleValue]) forKey:property];
+                        
+                    } else if ([propertyType isEqualToString:@"q"] ||
+                               [propertyType isEqualToString:@"Q"] ||
+                               [propertyType isEqualToString:@"l"] ||
+                               [propertyType isEqualToString:@"i"]){
+                        
+                        [obj setValue: @([value integerValue]) forKey:property];
+                        
+                    } else if ([propertyType isEqualToString:@"B"] ||
+                               [propertyType isEqualToString:@"c"]){
+                        
+                        if (([value isKindOfClass:[NSString class]] && [value isEqualToString:@"true"]) || (BOOL) [value intValue]){
+                            
+                            [obj setValue: @(YES) forKey:property];
+                            
+                        } else {
+                            [obj setValue: @(NO) forKey:property];
+                        }
+                        
+                    } else {
+                        
+                        [obj setValue:value forKey:property];
+                        
+                    }
+
             }
             
             // If property is NSArray or NSMutableArray, and if user provides
@@ -196,19 +242,31 @@ static const char *getPropertyType(objc_property_t property) {
                     [obj setValue:arrString forKey:dataKey];
                 }
                 
-                else if ([obj respondsToSelector:@selector(rm_itemClassForArrayProperty:)]) {
+                else if ([obj respondsToSelector:@selector(rmItemClassForArrayProperty:)]) {
                     // Get the class of item inside the array
-                    Class itemCls = [obj rm_itemClassForArrayProperty:property];
+                    Class itemCls = [obj rmItemClassForArrayProperty:property];
                     
                     // If no item class is specified, set value directly to object property
                     if (!itemCls) {
                         [obj setValue:value forKey:property];
                     } else {
-                        // Process value to array with specified item class
-                        NSArray* arr = [RMMapper arrayOfClass:itemCls fromArrayOfDictionary:value];
+                        NSArray* arr = [[NSArray alloc] init];
+                        if ([obj respondsToSelector:@selector(initWithDictionary:context:)]) {
+                            // Process value to array with specified item class
+                            arr = [RMMapper arrayOfClass:itemCls fromArrayOfDictionary:value context: [obj managedObjectContext]];
+
+                        } else {
+                            // Process value to array with specified item class
+                            arr = [RMMapper arrayOfClass:itemCls fromArrayOfDictionary:value];
+                        }
                         
                         // Set mutable array to property if propertyType is NSMutableArray
-                        if ([propertyType isEqualToString:@"NSMutableArray"]) {
+                        if ([propertyType isEqualToString:@"NSSet"]) {
+                            [obj setValue:[NSSet setWithArray:arr] forKey:property];
+                        }
+                        
+                        // Set mutable array to property if propertyType is NSMutableArray
+                        else if ([propertyType isEqualToString:@"NSMutableArray"]) {
                             [obj setValue:[NSMutableArray arrayWithArray:arr] forKey:property];
                         }
                         
@@ -275,8 +333,8 @@ static const char *getPropertyType(objc_property_t property) {
     NSDictionary* properties = [RMMapper propertiesForClass:[obj class]];
     
     NSDictionary *dataKeysForProperties = nil;
-    if ([obj respondsToSelector:@selector(rm_dataKeysForClassProperties)]) {
-        dataKeysForProperties = [obj rm_dataKeysForClassProperties];
+    if ([obj respondsToSelector:@selector(rmDataKeysForClassProperties)]) {
+        dataKeysForProperties = [obj rmDataKeysForClassProperties];
     }
     
     NSMutableDictionary* objDict = [NSMutableDictionary dictionary];
@@ -302,12 +360,40 @@ static const char *getPropertyType(objc_property_t property) {
         
         id val = [obj valueForKey:property];
         
+        if (!val) {
+            continue;
+        }
+        
         // If val is custom class, we will try to parse this custom class to NSDictionary
         NSString *propertyType = properties[property];
+    
+        if ([propertyType isEqualToString:@"d"]){
+            
+            val = @([val doubleValue]);
+            
+        } else if ([propertyType isEqualToString:@"q"] ||
+                   [propertyType isEqualToString:@"Q"] ||
+                   [propertyType isEqualToString:@"l"] ||
+                   [propertyType isEqualToString:@"i"]){
+            
+            val = @([val integerValue]);
+            
+        } else if ([propertyType isEqualToString:@"B"] ||
+                   [propertyType isEqualToString:@"c"]){
+            val = @(NO);
+            
+            if (([val isKindOfClass:[NSString class]] && [val isEqualToString:@"true"]) || (BOOL) [val intValue]){
+                
+                val = @(YES);
+                
+            }
+            
+        }
         
         if (![RMMapper hasBasicPrefix:propertyType] && val) {
             val = [RMMapper mutableDictionaryForObject:val include:nil];
         }
+        
         
         [objDict setValue:val forKey:dataKey];
     }
@@ -329,7 +415,46 @@ static const char *getPropertyType(objc_property_t property) {
     return [NSDictionary dictionaryWithDictionary:mutableDict];
 }
 
+#pragma mark - Populate array of class from data array with CoreData
 
++ (id)objectWithClass:(Class)cls fromDictionary:(NSDictionary *)dict context:(NSManagedObjectContext *)context {
+    
+    id childObj = [[cls alloc] initWithDictionary:dict context: context];
+    
+    return childObj;
+}
+
++(NSArray *)arrayOfClass:(Class)cls fromArrayOfDictionary:(NSArray *)array context:(NSManagedObjectContext *)context{
+    NSMutableArray *mutableArray = [RMMapper mutableArrayOfClass:cls fromArrayOfDictionary:array context:context];
+    
+    NSArray *arrWithClass = [NSArray arrayWithArray:mutableArray];
+    return arrWithClass;
+}
+
++(NSMutableArray *)mutableArrayOfClass:(Class)cls fromArrayOfDictionary:(NSArray *)array context:(NSManagedObjectContext *)context {
+    
+    if (!array) {
+        return nil;
+    }
+    
+    NSMutableArray *mutableArray = [[NSMutableArray alloc] initWithCapacity:[array count]];
+    
+    for (id item in array) {
+        
+        // The item must be a dictionary. Otherwise, skip it
+        if (![item isKindOfClass:[NSDictionary class]]) {
+            RMMapperLog(@"RMMapper: item inside array must be NSDictionary object");
+            continue;
+        }
+        
+        // Convert item dictionary to object with predefined class
+        id obj = context == nil ? [RMMapper objectWithClass:cls fromDictionary:item] : [RMMapper objectWithClass:cls fromDictionary:item context:context];
+        [mutableArray addObject:obj];
+    }
+    
+    return mutableArray;
+}
 
 
 @end
+
