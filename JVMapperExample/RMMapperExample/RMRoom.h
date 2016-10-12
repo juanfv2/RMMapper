@@ -1,18 +1,18 @@
 //
 //  RMRoom.h
-//  RMMapperExample
+//  JVMapperExample
 //
 //  Created by Roomorama on 28/6/13.
 //  Copyright (c) 2013 Roomorama. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
-#import "RMMapper.h"
+#import "JVMapper.h"
 #import "RMUser.h"
-#import "NSObject+RMArchivable.h"
+#import "NSObject+JVArchivable.h"
 
 
-@interface RMRoom : NSObject <RMMapping>
+@interface RMRoom : NSObject <JVMapping>
 
 // The attributes is exactly same as the JSON key
 @property (nonatomic, retain) NSNumber* id;

@@ -6,8 +6,8 @@
 //  Copyright (c) 2012 Roomorama. All rights reserved.
 //
 
-#import "NSObject+RMCopyable.h"
-#import "RMMapper.h"
+#import "NSObject+JVCopyable.h"
+#import "JVMapper.h"
 
 
 @implementation NSObject (RMCopyable)
@@ -15,7 +15,7 @@
 -(instancetype)copyWithZone:(NSZone *)zone {
     typeof(self) copiedObj = [[[self class] allocWithZone:zone] init];
     if (copiedObj) {
-        NSDictionary* properties = [RMMapper propertiesForClass:[self class]];
+        NSDictionary* properties = [JVMapper propertiesForClass:[self class]];
         // Retrieve excluded properties
         NSArray *excludedProperties = nil;
         

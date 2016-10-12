@@ -2,16 +2,16 @@
 #import <CoreData/CoreData.h>
 
 #ifdef DEBUG
-#   define RMMapperLog(__FORMAT__, ...) NSLog(__FORMAT__, ##__VA_ARGS__)
+#   define JVMapperLog(__FORMAT__, ...) NSLog(__FORMAT__, ##__VA_ARGS__)
 #else
-#   define RMMapperLog(...) do {} while (0)
+#   define JVMapperLog(...) do {} while (0)
 #endif
 
 /**
  * This protocol let you control conversion between data key
  * and class properties
  */
-@protocol RMMapping <NSObject>
+@protocol JVMapping <NSObject>
 
 @optional
 
@@ -33,7 +33,7 @@
  * This protocol let you control conversion between data key
  * and class properties
  */
-@protocol RMMappingSQ <NSObject>
+@protocol JVMappingSQ <NSObject>
 
 // Init method with SQLite
 - (id)initWithBy:(NSArray *)conditions;
@@ -44,14 +44,14 @@
  * This protocol let you control conversion between data key
  * and class properties
  */
-@protocol RMMappingCD <NSObject>
+@protocol JVMappingCD <NSObject>
 
 // Init method from CoreData
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary context:(NSManagedObjectContext *)context;
 
 @end
 
-@interface RMMapper : NSObject
+@interface JVMapper : NSObject
 
 #pragma mark - Get properties for a class
 

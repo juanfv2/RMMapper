@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Roomorama. All rights reserved.
 //
 
-#import "NSUserDefaults+RMSaveCustomObject.h"
+#import "NSUserDefaults+JVSaveCustomObject.h"
 
 @implementation NSUserDefaults (RMSaveCustomObject)
 

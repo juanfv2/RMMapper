@@ -1,8 +1,7 @@
-#import "RMMapper.h"
-
+#import "JVMapper.h"
 #import <objc/runtime.h>
 
-@implementation RMMapper
+@implementation JVMapper
 
 static const char *getPropertyType(objc_property_t property) {
     const char *attributes = property_getAttributes(property);
@@ -33,8 +32,22 @@ static const char *getPropertyType(objc_property_t property) {
     }
     return "";
 }
-
-#define excludedFrameworkPrefixes @[ @"NS", @"UI", @"CL", @"CF", @"AB", @"CA", @"CI", @"CG", /* swift */ @"d", @"q", @"Q", @"l", @"i", @"B", @"c" /* swift */ ]
+/*
+ c	A char
+ i	An int
+ s	A short
+ l	A longl is treated as a 32-bit quantity on 64-bit programs.
+ q	A long long
+ C	An unsigned char
+ I	An unsigned int
+ S	An unsigned short
+ L	An unsigned long
+ Q	An unsigned long long
+ f	A float
+ d	A double
+ B	A C++ bool or a C99 _Bool
+ */
+#define excludedFrameworkPrefixes @[@"NS", @"UI", @"CL", @"CF", @"AB", @"CA", @"CI", @"CG", /* types */ @"c", @"i", @"s", @"q", @"C", @"I", @"S", @"L", @"Q", @"f", @"d", @"B" /* types */ ]
 
 #pragma mark - Check if class type belong to Cocoa Framework
 
@@ -103,7 +116,7 @@ static const char *getPropertyType(objc_property_t property) {
     
     Class cls = [obj class];
     
-    // Check object for conforming RMMappingKeyPathObject,
+    // Check object for conforming JVMappingKeyPathObject,
     // and if object conform this protocol, we get mapping for this class
     NSDictionary *dataKeysForProperties = nil;
     if ([obj respondsToSelector:@selector(rmDataKeysForClassProperties)]) {
@@ -111,7 +124,7 @@ static const char *getPropertyType(objc_property_t property) {
     }
     
     // Retrieve property declared in class definition
-    NSDictionary* properties = [RMMapper propertiesForClass:cls];
+    NSDictionary* properties = [JVMapper propertiesForClass:cls];
     
     // Since key of object is a string, we need to check the dict contains
     // string as key. If it contains non-string key, the key will be skipped.
@@ -121,7 +134,7 @@ static const char *getPropertyType(objc_property_t property) {
         
         // Skip for non-string key
         if ([dataKey isKindOfClass:[NSString class]] == NO) {
-            RMMapperLog(@"RMMapper: key must be NSString. Received key \"%@\"", dataKey);
+            JVMapperLog(@"JVMapper: key must be NSString. Received key \"%@\"", dataKey);
             continue;
         }
         
@@ -138,13 +151,13 @@ static const char *getPropertyType(objc_property_t property) {
         
         // If property doesn't belong to object, skip it
         if (propertyType == nil) {
-            RMMapperLog(@"RMMapper: key \"%@\" does not exist in class or class mapping \"%@\"", property, NSStringFromClass(cls));
+            JVMapperLog(@"JVMapper: key \"%@\" does not exist in class or class mapping \"%@\"", property, NSStringFromClass(cls));
             continue;
         }
         
         // If key inside excludeArray, skip it
         if (excludeArray && [excludeArray containsObject:property]) {
-            RMMapperLog(@"RMMapper: key \"%@\" is skipped", property);
+            JVMapperLog(@"JVMapper: key \"%@\" is skipped", property);
             continue;
         }
         
@@ -159,7 +172,7 @@ static const char *getPropertyType(objc_property_t property) {
         // If the property type is a custom class (not NSDictionary),
         // and the value is a dictionary,
         // convert the dictionary to object of that class
-        if (![RMMapper hasBasicPrefix:propertyType] &&
+        if (![JVMapper hasBasicPrefix:propertyType] &&
             [value isKindOfClass:[NSDictionary class]]) {
             
             // Init a child attribute with respective class
@@ -179,7 +192,7 @@ static const char *getPropertyType(objc_property_t property) {
             
             if (childObj != nil) {
                 
-                [RMMapper populateObject:childObj fromDictionary:value];
+                [JVMapper populateObject:childObj fromDictionary:value];
                 
                 [obj setValue:childObj forKey:property];
                 
@@ -191,7 +204,23 @@ static const char *getPropertyType(objc_property_t property) {
         else {
             // If the value is basic type and is not array, parse it directly to obj
             if (![value isKindOfClass:[NSArray class]]) {
-
+                
+                /*
+                 c	A char
+                 i	An int
+                 s	A short
+                 l	A longl is treated as a 32-bit quantity on 64-bit programs.
+                 q	A long long
+                 C	An unsigned char
+                 I	An unsigned int
+                 S	An unsigned short
+                 L	An unsigned long
+                 Q	An unsigned long long
+                 f	A float
+                 d	A double
+                 B	A C++ bool or a C99 _Bool
+                 */
+                
                     if ([propertyType isEqualToString:@"NSNumber"]) {
                         
                         NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
@@ -200,19 +229,68 @@ static const char *getPropertyType(objc_property_t property) {
                         
                         [obj setValue:myNumber forKey:property];
                         
-                    } else if ([propertyType isEqualToString:@"d"]){
+                    }
+                    else if ([propertyType isEqualToString:@"c"]){
+                        
+                        [obj setValue: @([value charValue]) forKey:property];
+                        
+                    }
+                    else if ([propertyType isEqualToString:@"i"]){
+                        
+                        [obj setValue: @([value intValue]) forKey:property];
+                        
+                    }
+                    else if ([propertyType isEqualToString:@"s"]){
+                        
+                        [obj setValue: @([value shortValue]) forKey:property];
+                        
+                    }
+                    else if ([propertyType isEqualToString:@"l"]){
+                        
+                        [obj setValue: @([value longValue]) forKey:property];
+                        
+                    }
+                    else if ([propertyType isEqualToString:@"q"]){
+                        
+                        [obj setValue: @([value longLongValue]) forKey:property];
+                        
+                    }
+                    else if ([propertyType isEqualToString:@"C"]){
+                        
+                        [obj setValue: @([value unsignedCharValue]) forKey:property];
+                        
+                    }
+                    else if ([propertyType isEqualToString:@"I"]){
+                        
+                        [obj setValue: @([value unsignedIntValue]) forKey:property];
+                        
+                    }
+                    else if ([propertyType isEqualToString:@"S"]){
+                        
+                        [obj setValue: @([value unsignedShortValue]) forKey:property];
+                        
+                    }
+                    else if ([propertyType isEqualToString:@"L"]){
+                        
+                        [obj setValue: @([value unsignedLongValue]) forKey:property];
+                        
+                    }
+                    else if ([propertyType isEqualToString:@"Q"]){
+                        
+                        [obj setValue: @([value unsignedLongLongValue]) forKey:property];
+                        
+                    }
+                    else if ([propertyType isEqualToString:@"f"]){
+                        
+                        [obj setValue: @([value floatValue]) forKey:property];
+                        
+                    }
+                    else if ([propertyType isEqualToString:@"d"]){
                         
                         [obj setValue: @([value doubleValue]) forKey:property];
                         
-                    } else if ([propertyType isEqualToString:@"q"] ||
-                               [propertyType isEqualToString:@"Q"] ||
-                               [propertyType isEqualToString:@"l"] ||
-                               [propertyType isEqualToString:@"i"]){
-                        
-                        [obj setValue: @([value integerValue]) forKey:property];
-                        
-                    } else if ([propertyType isEqualToString:@"B"] ||
-                               [propertyType isEqualToString:@"c"]){
+                    }
+                    else if ([propertyType isEqualToString:@"B"]){
                         
                         if (([value isKindOfClass:[NSString class]] && [value isEqualToString:@"true"]) || (BOOL) [value intValue]){
                             
@@ -253,11 +331,11 @@ static const char *getPropertyType(objc_property_t property) {
                         NSArray* arr = [[NSArray alloc] init];
                         if ([obj respondsToSelector:@selector(initWithDictionary:context:)]) {
                             // Process value to array with specified item class
-                            arr = [RMMapper arrayOfClass:itemCls fromArrayOfDictionary:value context: [obj managedObjectContext]];
+                            arr = [JVMapper arrayOfClass:itemCls fromArrayOfDictionary:value context: [obj managedObjectContext]];
 
                         } else {
                             // Process value to array with specified item class
-                            arr = [RMMapper arrayOfClass:itemCls fromArrayOfDictionary:value];
+                            arr = [JVMapper arrayOfClass:itemCls fromArrayOfDictionary:value];
                         }
                         
                         // Set mutable array to property if propertyType is NSMutableArray
@@ -288,7 +366,7 @@ static const char *getPropertyType(objc_property_t property) {
 + (id)objectWithClass:(Class)cls fromDictionary:(NSDictionary *)dict {
     id obj = [[cls alloc] init];
     
-    [RMMapper populateObject:obj fromDictionary:dict];
+    [JVMapper populateObject:obj fromDictionary:dict];
     
     return obj;
 }
@@ -296,7 +374,7 @@ static const char *getPropertyType(objc_property_t property) {
 #pragma mark - Populate array of class from data array
 
 +(NSArray *)arrayOfClass:(Class)cls fromArrayOfDictionary:(NSArray *)array {
-    NSMutableArray *mutableArray = [RMMapper mutableArrayOfClass:cls fromArrayOfDictionary:array];
+    NSMutableArray *mutableArray = [JVMapper mutableArrayOfClass:cls fromArrayOfDictionary:array];
     
     NSArray *arrWithClass = [NSArray arrayWithArray:mutableArray];
     return arrWithClass;
@@ -314,12 +392,12 @@ static const char *getPropertyType(objc_property_t property) {
         
         // The item must be a dictionary. Otherwise, skip it
         if (![item isKindOfClass:[NSDictionary class]]) {
-            RMMapperLog(@"RMMapper: item inside array must be NSDictionary object");
+            JVMapperLog(@"JVMapper: item inside array must be NSDictionary object");
             continue;
         }
         
         // Convert item dictionary to object with predefined class
-        id obj = [RMMapper objectWithClass:cls fromDictionary:item];
+        id obj = [JVMapper objectWithClass:cls fromDictionary:item];
         [mutableArray addObject:obj];
     }
     
@@ -330,7 +408,7 @@ static const char *getPropertyType(objc_property_t property) {
 #pragma mark - Convert plain object to dictionary
 
 + (NSDictionary*) mutableDictionaryForObject:(id)obj include:(NSArray*)includeArray {
-    NSDictionary* properties = [RMMapper propertiesForClass:[obj class]];
+    NSDictionary* properties = [JVMapper propertiesForClass:[obj class]];
     
     NSDictionary *dataKeysForProperties = nil;
     if ([obj respondsToSelector:@selector(rmDataKeysForClassProperties)]) {
@@ -343,7 +421,7 @@ static const char *getPropertyType(objc_property_t property) {
         
         // If includeArray is provided, skip if the property is not inside includeArray
         if (includeArray && ![includeArray containsObject:property]) {
-            RMMapperLog(@"RMMapper: key \"%@\" is skipped", property);
+            JVMapperLog(@"JVMapper: key \"%@\" is skipped", property);
             continue;
         }
         
@@ -390,8 +468,8 @@ static const char *getPropertyType(objc_property_t property) {
             
         }
         
-        if (![RMMapper hasBasicPrefix:propertyType] && val) {
-            val = [RMMapper mutableDictionaryForObject:val include:nil];
+        if (![JVMapper hasBasicPrefix:propertyType] && val) {
+            val = [JVMapper mutableDictionaryForObject:val include:nil];
         }
         
         
@@ -402,16 +480,16 @@ static const char *getPropertyType(objc_property_t property) {
 }
 
 + (NSMutableDictionary *)mutableDictionaryForObject:(id)obj {
-    return [RMMapper mutableDictionaryForObject:obj include:nil];
+    return [JVMapper mutableDictionaryForObject:obj include:nil];
 }
 
 +(NSDictionary *)dictionaryForObject:(id)obj include:(NSArray *)includeArray {
-    NSMutableDictionary* dict = [RMMapper mutableDictionaryForObject:obj include:includeArray];
+    NSMutableDictionary* dict = [JVMapper mutableDictionaryForObject:obj include:includeArray];
     return [NSDictionary dictionaryWithDictionary:dict];
 }
 
 +(NSDictionary*)dictionaryForObject:(id)obj {
-    NSMutableDictionary *mutableDict = [RMMapper mutableDictionaryForObject:obj];
+    NSMutableDictionary *mutableDict = [JVMapper mutableDictionaryForObject:obj];
     return [NSDictionary dictionaryWithDictionary:mutableDict];
 }
 
@@ -425,7 +503,7 @@ static const char *getPropertyType(objc_property_t property) {
 }
 
 +(NSArray *)arrayOfClass:(Class)cls fromArrayOfDictionary:(NSArray *)array context:(NSManagedObjectContext *)context{
-    NSMutableArray *mutableArray = [RMMapper mutableArrayOfClass:cls fromArrayOfDictionary:array context:context];
+    NSMutableArray *mutableArray = [JVMapper mutableArrayOfClass:cls fromArrayOfDictionary:array context:context];
     
     NSArray *arrWithClass = [NSArray arrayWithArray:mutableArray];
     return arrWithClass;
@@ -443,12 +521,12 @@ static const char *getPropertyType(objc_property_t property) {
         
         // The item must be a dictionary. Otherwise, skip it
         if (![item isKindOfClass:[NSDictionary class]]) {
-            RMMapperLog(@"RMMapper: item inside array must be NSDictionary object");
+            JVMapperLog(@"JVMapper: item inside array must be NSDictionary object");
             continue;
         }
         
         // Convert item dictionary to object with predefined class
-        id obj = context == nil ? [RMMapper objectWithClass:cls fromDictionary:item] : [RMMapper objectWithClass:cls fromDictionary:item context:context];
+        id obj = context == nil ? [JVMapper objectWithClass:cls fromDictionary:item] : [JVMapper objectWithClass:cls fromDictionary:item context:context];
         [mutableArray addObject:obj];
     }
     

@@ -1,6 +1,6 @@
 //
 //  RMMasterViewController.m
-//  RMMapperExample
+//  JVMapperExample
 //
 //  Created by Roomorama on 28/6/13.
 //  Copyright (c) 2013 Roomorama. All rights reserved.
@@ -11,10 +11,10 @@
 #import "RMRoom.h"
 #import "RMItem.h"
 #import "RMTopping.h"
-#import "RMMapper.h"
+#import "JVMapper.h"
 #import "UIImageView+AFNetworking.h"
 #import "RMTableViewCell.h"
-#import "NSUserDefaults+RMSaveCustomObject.h"
+#import "NSUserDefaults+JVSaveCustomObject.h"
 
 @interface RMMasterViewController ()
 
@@ -41,7 +41,7 @@
         NSData *theData = [NSData dataWithContentsOfFile:path];
         id responseJSON = [NSJSONSerialization JSONObjectWithData:theData options:NSJSONReadingMutableContainers error:nil];
         id responseJSONResult = [responseJSON objectForKey:@"result"];
-        self.rooms = [RMMapper mutableArrayOfClass:[RMRoom class]
+        self.rooms = [JVMapper mutableArrayOfClass:[RMRoom class]
                              fromArrayOfDictionary:responseJSONResult];
         
         [defaults rmSetCustomObject:self.rooms forKey:@"SAVED_DATA"];
@@ -53,9 +53,9 @@
     NSData *theData = [NSData dataWithContentsOfFile:path];
     id json = [NSJSONSerialization JSONObjectWithData:theData options:NSJSONReadingMutableContainers error:nil];
     
-    RMItem* item = [RMMapper objectWithClass:[RMItem class] fromDictionary:json];
+    RMItem* item = [JVMapper objectWithClass:[RMItem class] fromDictionary:json];
     for (id topping in item.topping) {
-        NSLog(@"Topping :%@, class %@", [RMMapper dictionaryForObject:topping], [topping class]);
+        NSLog(@"Topping :%@, class %@", [JVMapper dictionaryForObject:topping], [topping class]);
     }
 }
 

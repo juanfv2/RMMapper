@@ -6,14 +6,14 @@
 //
 //
 
-#import "NSObject+RMArchivable.h"
-#import "RMMapper.h"
+#import "NSObject+JVArchivable.h"
+#import "JVMapper.h"
 
 @implementation NSObject (RMArchivable)
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
     // Encode properties, other class variables, etc
-    NSDictionary* propertyDict = [RMMapper propertiesForClass:[self class]];
+    NSDictionary* propertyDict = [JVMapper propertiesForClass:[self class]];
     
     // Retrieve excluded properties
     NSArray *excludedProperties = nil;
@@ -33,7 +33,7 @@
 - (instancetype)initWithCoder:(NSCoder *)decoder {
     if([self init]) {
         // Decode properties, other class vars
-        NSDictionary* propertyDict = [RMMapper propertiesForClass:[self class]];
+        NSDictionary* propertyDict = [JVMapper propertiesForClass:[self class]];
         
         // Retrieve excluded properties
         NSArray *excludedProperties = nil;

@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D8FF2421DAE73D100D0F5FE /* JVMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8FF23B1DAE73D100D0F5FE /* JVMapper.m */; };
+		0D8FF2431DAE73D100D0F5FE /* NSObject+JVArchivable.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8FF23D1DAE73D100D0F5FE /* NSObject+JVArchivable.m */; };
+		0D8FF2441DAE73D100D0F5FE /* NSObject+JVCopyable.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8FF23F1DAE73D100D0F5FE /* NSObject+JVCopyable.m */; };
+		0D8FF2451DAE73D100D0F5FE /* NSUserDefaults+JVSaveCustomObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D8FF2411DAE73D100D0F5FE /* NSUserDefaults+JVSaveCustomObject.m */; };
 		273C984D19D2A96500EB3905 /* item.json in Resources */ = {isa = PBXBuildFile; fileRef = 273C984C19D2A96500EB3905 /* item.json */; };
 		273C985019D2A9DC00EB3905 /* RMItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 273C984F19D2A9DC00EB3905 /* RMItem.m */; };
 		273C985319D2AC5800EB3905 /* RMTopping.m in Sources */ = {isa = PBXBuildFile; fileRef = 273C985219D2AC5800EB3905 /* RMTopping.m */; };
@@ -37,13 +41,17 @@
 		4027FDA6177D892B00A5F0C8 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4027FDA5177D892B00A5F0C8 /* SystemConfiguration.framework */; };
 		4027FDA8177D893400A5F0C8 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4027FDA7177D893400A5F0C8 /* MobileCoreServices.framework */; };
 		4027FDDB1785151F00A5F0C8 /* RMTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 4027FDDA1785151F00A5F0C8 /* RMTableViewCell.m */; };
-		4027FDE61785191A00A5F0C8 /* NSObject+RMArchivable.m in Sources */ = {isa = PBXBuildFile; fileRef = 4027FDDF1785191A00A5F0C8 /* NSObject+RMArchivable.m */; };
-		4027FDE71785191A00A5F0C8 /* NSObject+RMCopyable.m in Sources */ = {isa = PBXBuildFile; fileRef = 4027FDE11785191A00A5F0C8 /* NSObject+RMCopyable.m */; };
-		4027FDE81785191A00A5F0C8 /* NSUserDefaults+RMSaveCustomObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 4027FDE31785191A00A5F0C8 /* NSUserDefaults+RMSaveCustomObject.m */; };
-		4027FDE91785191A00A5F0C8 /* RMMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4027FDE51785191A00A5F0C8 /* RMMapper.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0D8FF23A1DAE73D100D0F5FE /* JVMapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JVMapper.h; path = ../JVMapper/JVMapper.h; sourceTree = "<group>"; };
+		0D8FF23B1DAE73D100D0F5FE /* JVMapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JVMapper.m; path = ../JVMapper/JVMapper.m; sourceTree = "<group>"; };
+		0D8FF23C1DAE73D100D0F5FE /* NSObject+JVArchivable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+JVArchivable.h"; path = "../JVMapper/NSObject+JVArchivable.h"; sourceTree = "<group>"; };
+		0D8FF23D1DAE73D100D0F5FE /* NSObject+JVArchivable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+JVArchivable.m"; path = "../JVMapper/NSObject+JVArchivable.m"; sourceTree = "<group>"; };
+		0D8FF23E1DAE73D100D0F5FE /* NSObject+JVCopyable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+JVCopyable.h"; path = "../JVMapper/NSObject+JVCopyable.h"; sourceTree = "<group>"; };
+		0D8FF23F1DAE73D100D0F5FE /* NSObject+JVCopyable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+JVCopyable.m"; path = "../JVMapper/NSObject+JVCopyable.m"; sourceTree = "<group>"; };
+		0D8FF2401DAE73D100D0F5FE /* NSUserDefaults+JVSaveCustomObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSUserDefaults+JVSaveCustomObject.h"; path = "../JVMapper/NSUserDefaults+JVSaveCustomObject.h"; sourceTree = "<group>"; };
+		0D8FF2411DAE73D100D0F5FE /* NSUserDefaults+JVSaveCustomObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSUserDefaults+JVSaveCustomObject.m"; path = "../JVMapper/NSUserDefaults+JVSaveCustomObject.m"; sourceTree = "<group>"; };
 		273C984C19D2A96500EB3905 /* item.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = item.json; sourceTree = "<group>"; };
 		273C984E19D2A9DC00EB3905 /* RMItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMItem.h; sourceTree = "<group>"; };
 		273C984F19D2A9DC00EB3905 /* RMItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMItem.m; sourceTree = "<group>"; };
@@ -95,14 +103,6 @@
 		4027FDA7177D893400A5F0C8 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		4027FDD91785151F00A5F0C8 /* RMTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMTableViewCell.h; sourceTree = "<group>"; };
 		4027FDDA1785151F00A5F0C8 /* RMTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMTableViewCell.m; sourceTree = "<group>"; };
-		4027FDDE1785191A00A5F0C8 /* NSObject+RMArchivable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+RMArchivable.h"; sourceTree = "<group>"; };
-		4027FDDF1785191A00A5F0C8 /* NSObject+RMArchivable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+RMArchivable.m"; sourceTree = "<group>"; };
-		4027FDE01785191A00A5F0C8 /* NSObject+RMCopyable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+RMCopyable.h"; sourceTree = "<group>"; };
-		4027FDE11785191A00A5F0C8 /* NSObject+RMCopyable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+RMCopyable.m"; sourceTree = "<group>"; };
-		4027FDE21785191A00A5F0C8 /* NSUserDefaults+RMSaveCustomObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUserDefaults+RMSaveCustomObject.h"; sourceTree = "<group>"; };
-		4027FDE31785191A00A5F0C8 /* NSUserDefaults+RMSaveCustomObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUserDefaults+RMSaveCustomObject.m"; sourceTree = "<group>"; };
-		4027FDE41785191A00A5F0C8 /* RMMapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMapper.h; sourceTree = "<group>"; };
-		4027FDE51785191A00A5F0C8 /* RMMapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMMapper.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -246,14 +246,14 @@
 		4027FDDD1785191900A5F0C8 /* RMMapper */ = {
 			isa = PBXGroup;
 			children = (
-				4027FDDE1785191A00A5F0C8 /* NSObject+RMArchivable.h */,
-				4027FDDF1785191A00A5F0C8 /* NSObject+RMArchivable.m */,
-				4027FDE01785191A00A5F0C8 /* NSObject+RMCopyable.h */,
-				4027FDE11785191A00A5F0C8 /* NSObject+RMCopyable.m */,
-				4027FDE21785191A00A5F0C8 /* NSUserDefaults+RMSaveCustomObject.h */,
-				4027FDE31785191A00A5F0C8 /* NSUserDefaults+RMSaveCustomObject.m */,
-				4027FDE41785191A00A5F0C8 /* RMMapper.h */,
-				4027FDE51785191A00A5F0C8 /* RMMapper.m */,
+				0D8FF23A1DAE73D100D0F5FE /* JVMapper.h */,
+				0D8FF23B1DAE73D100D0F5FE /* JVMapper.m */,
+				0D8FF23C1DAE73D100D0F5FE /* NSObject+JVArchivable.h */,
+				0D8FF23D1DAE73D100D0F5FE /* NSObject+JVArchivable.m */,
+				0D8FF23E1DAE73D100D0F5FE /* NSObject+JVCopyable.h */,
+				0D8FF23F1DAE73D100D0F5FE /* NSObject+JVCopyable.m */,
+				0D8FF2401DAE73D100D0F5FE /* NSUserDefaults+JVSaveCustomObject.h */,
+				0D8FF2411DAE73D100D0F5FE /* NSUserDefaults+JVSaveCustomObject.m */,
 			);
 			name = RMMapper;
 			path = ../../RMMapper;
@@ -335,26 +335,26 @@
 			files = (
 				273C985019D2A9DC00EB3905 /* RMItem.m in Sources */,
 				4027FD54177D7ACC00A5F0C8 /* main.m in Sources */,
+				0D8FF2451DAE73D100D0F5FE /* NSUserDefaults+JVSaveCustomObject.m in Sources */,
 				4027FD58177D7ACC00A5F0C8 /* RMAppDelegate.m in Sources */,
 				4027FD64177D7ACC00A5F0C8 /* RMMasterViewController.m in Sources */,
 				4027FD67177D7ACC00A5F0C8 /* RMDetailViewController.m in Sources */,
 				4027FD82177D82C500A5F0C8 /* RMRoom.m in Sources */,
+				0D8FF2431DAE73D100D0F5FE /* NSObject+JVArchivable.m in Sources */,
 				4027FD86177D83BB00A5F0C8 /* RMUser.m in Sources */,
 				4027FD9C177D86A900A5F0C8 /* AFHTTPClient.m in Sources */,
 				4027FD9D177D86A900A5F0C8 /* AFHTTPRequestOperation.m in Sources */,
 				4027FD9E177D86A900A5F0C8 /* AFImageRequestOperation.m in Sources */,
 				273C985319D2AC5800EB3905 /* RMTopping.m in Sources */,
 				4027FD9F177D86A900A5F0C8 /* AFJSONRequestOperation.m in Sources */,
+				0D8FF2441DAE73D100D0F5FE /* NSObject+JVCopyable.m in Sources */,
 				4027FDA0177D86A900A5F0C8 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				4027FDA1177D86A900A5F0C8 /* AFPropertyListRequestOperation.m in Sources */,
 				4027FDA2177D86A900A5F0C8 /* AFURLConnectionOperation.m in Sources */,
 				4027FDA3177D86A900A5F0C8 /* AFXMLRequestOperation.m in Sources */,
 				4027FDA4177D86A900A5F0C8 /* UIImageView+AFNetworking.m in Sources */,
 				4027FDDB1785151F00A5F0C8 /* RMTableViewCell.m in Sources */,
-				4027FDE61785191A00A5F0C8 /* NSObject+RMArchivable.m in Sources */,
-				4027FDE71785191A00A5F0C8 /* NSObject+RMCopyable.m in Sources */,
-				4027FDE81785191A00A5F0C8 /* NSUserDefaults+RMSaveCustomObject.m in Sources */,
-				4027FDE91785191A00A5F0C8 /* RMMapper.m in Sources */,
+				0D8FF2421DAE73D100D0F5FE /* JVMapper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

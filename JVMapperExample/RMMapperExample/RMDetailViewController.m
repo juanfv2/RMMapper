@@ -1,13 +1,13 @@
 //
 //  RMDetailViewController.m
-//  RMMapperExample
+//  JVMapperExample
 //
 //  Created by Roomorama on 28/6/13.
 //  Copyright (c) 2013 Roomorama. All rights reserved.
 //
 
 #import "RMDetailViewController.h"
-#import "NSUserDefaults+RMSaveCustomObject.h"
+#import "NSUserDefaults+JVSaveCustomObject.h"
 
 @interface RMDetailViewController ()
 
@@ -40,9 +40,12 @@
                            self.room.currencyCode,
                            self.room.price];
     self.hostLabel.text = self.room.host.url;
+    
+    NSLog(@"BOOL: '%i'", self.room.host.certified);
+    
     self.certifiedLabel.text = [NSString stringWithFormat:@"%@", self.room.host.certified ? @"true" : @"false"];
     
-    NSLog(@"%@", [RMMapper dictionaryForObject:self.room]);
+    NSLog(@"%@", [JVMapper dictionaryForObject:self.room]);
 }
 
 - (void)didReceiveMemoryWarning
