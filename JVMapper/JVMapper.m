@@ -33,19 +33,19 @@ static const char *getPropertyType(objc_property_t property) {
     return "";
 }
 /*
- c	A char
- i	An int
- s	A short
- l	A longl is treated as a 32-bit quantity on 64-bit programs.
- q	A long long
- C	An unsigned char
- I	An unsigned int
- S	An unsigned short
- L	An unsigned long
- Q	An unsigned long long
- f	A float
- d	A double
- B	A C++ bool or a C99 _Bool
+ c  A char
+ i  An int
+ s  A short
+ l  A longl is treated as a 32-bit quantity on 64-bit programs.
+ q  A long long
+ C  An unsigned char
+ I  An unsigned int
+ S  An unsigned short
+ L  An unsigned long
+ Q  An unsigned long long
+ f  A float
+ d  A double
+ B  A C++ bool or a C99 _Bool
  */
 #define excludedFrameworkPrefixes @[@"NS", @"UI", @"CL", @"CF", @"AB", @"CA", @"CI", @"CG", /* types */ @"c", @"i", @"s", @"q", @"C", @"I", @"S", @"L", @"Q", @"f", @"d", @"B" /* types */ ]
 
@@ -178,12 +178,9 @@ static const char *getPropertyType(objc_property_t property) {
             // Init a child attribute with respective class
             Class objCls = NSClassFromString(propertyType);
             
-            Method theMethod = class_getClassMethod(objCls, @selector(initWithDictionary:context:));
             id childObj;
             
-            //@selector(initWithBy:)
-            
-            if (theMethod) {
+            if ([obj managedObjectContext]) {
                 childObj = [[objCls alloc] initWithDictionary: value context: [obj managedObjectContext]];
             } else {
                 childObj = [[objCls alloc] init];
@@ -206,19 +203,19 @@ static const char *getPropertyType(objc_property_t property) {
             if (![value isKindOfClass:[NSArray class]]) {
                 
                 /*
-                 c	A char
-                 i	An int
-                 s	A short
-                 l	A longl is treated as a 32-bit quantity on 64-bit programs.
-                 q	A long long
-                 C	An unsigned char
-                 I	An unsigned int
-                 S	An unsigned short
-                 L	An unsigned long
-                 Q	An unsigned long long
-                 f	A float
-                 d	A double
-                 B	A C++ bool or a C99 _Bool
+                 c  A char
+                 i  An int
+                 s  A short
+                 l  A longl is treated as a 32-bit quantity on 64-bit programs.
+                 q  A long long
+                 C  An unsigned char
+                 I  An unsigned int
+                 S  An unsigned short
+                 L  An unsigned long
+                 Q  An unsigned long long
+                 f  A float
+                 d  A double
+                 B  A C++ bool or a C99 _Bool
                  */
                 
                     if ([propertyType isEqualToString:@"NSNumber"]) {
@@ -535,4 +532,3 @@ static const char *getPropertyType(objc_property_t property) {
 
 
 @end
-

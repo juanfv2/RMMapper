@@ -4,7 +4,7 @@ Pod::Spec.new do |s|
   s.license  = 'MIT'
   s.summary  = 'Convert NSDictionary/NSArray into objects with predefined class.'
   s.homepage = 'https://github.com/juanfv2/JVMapper'
-  s.authors  = { 'Juan Villalta' => 'juanfv2@gmail.com'}
+  s.authors  = { 'Juan Villalta' => 'juanfv2@gmail.com' }
   s.source   = { :git => 'https://github.com/juanfv2/JVMapper.git', :tag => '2.0.0' }
   s.source_files = 'JVMapper'
   s.requires_arc = true
