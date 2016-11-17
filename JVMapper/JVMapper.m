@@ -180,7 +180,7 @@ static const char *getPropertyType(objc_property_t property) {
             
             id childObj;
             
-            if ([obj managedObjectContext]) {
+            if ([objCls conformsToProtocol:@protocol(JVMappingCD)]) {
                 childObj = [[objCls alloc] initWithDictionary: value context: [obj managedObjectContext]];
             } else {
                 childObj = [[objCls alloc] init];
@@ -532,3 +532,4 @@ static const char *getPropertyType(objc_property_t property) {
 
 
 @end
+
