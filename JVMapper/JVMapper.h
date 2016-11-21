@@ -33,7 +33,7 @@
  * This protocol let you control conversion between data key
  * and class properties
  */
-@protocol JVMappingSQ <NSObject>
+@protocol JVMappingSQ <JVMapping>
 
 // Init method with SQLite
 - (id)initWithBy:(NSArray *)conditions;
@@ -44,7 +44,7 @@
  * This protocol let you control conversion between data key
  * and class properties
  */
-@protocol JVMappingCD <NSObject>
+@protocol JVMappingCD <JVMapping>
 
 // Init method from CoreData
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary context:(NSManagedObjectContext *)context;
