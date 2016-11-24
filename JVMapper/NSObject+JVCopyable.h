@@ -8,6 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSObject (RMCopyable) <NSCopying>
+@interface NSObject (JVCopyable) <NSCopying>
 
 @end

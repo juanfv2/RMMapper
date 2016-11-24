@@ -8,9 +8,9 @@
 
 #import "NSUserDefaults+JVSaveCustomObject.h"
 
-@implementation NSUserDefaults (RMSaveCustomObject)
+@implementation NSUserDefaults (JVSaveCustomObject)
 
--(void)rmSetCustomObject:(id)obj forKey:(NSString *)key {
+-(void)jvSetCustomObject:(id)obj forKey:(NSString *)key {
     if ([obj respondsToSelector:@selector(encodeWithCoder:)] == NO) {
         NSLog(@"Error save object to NSUserDefaults. Object must respond to encodeWithCoder: message");
         return;
@@ -21,7 +21,7 @@
     [defaults synchronize];
 }
 
--(id)rmCustomObjectForKey:(NSString *)key {
+-(id)jvCustomObjectForKey:(NSString *)key {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSData *encodedObject = [defaults objectForKey:key];
     id obj = [NSKeyedUnarchiver unarchiveObjectWithData:encodedObject];

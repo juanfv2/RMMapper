@@ -8,6 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSObject (RMArchivable)
+@interface NSObject (JVArchivable)
 
 @end

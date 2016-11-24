@@ -16,16 +16,14 @@
 @optional
 
 // Allow properties to be excluded from parsing data
-- (NSArray *)rmExcludedProperties;
+- (NSArray *)jvExcludedProperties;
 
 // Mapping for properties keys to class properties
-- (NSDictionary *)rmDataKeysForClassProperties;
+- (NSDictionary *)jvDataKeysForClassProperties;
 
 // Parse item within array
-- (Class)rmItemClassForArrayProperty:(NSString*)property;
+- (Class)jvItemClassForArrayProperty:(NSString *)property;
 
-// Allow properties to be excluded from saving data
-- (NSArray *)rmExcludedPropertiesDB;
 
 @end
 
@@ -35,8 +33,11 @@
  */
 @protocol JVMappingSQ <JVMapping>
 
+// Allow properties to be excluded from saving data
+- (NSArray *)jvExcludedPropertiesDB;
+
 // Init method with SQLite
-- (id)initWithBy:(NSArray *)conditions;
+- (id)initWithDictionaryAndSave:(NSDictionary *)dictionary;
 
 @end
 
@@ -46,7 +47,7 @@
  */
 @protocol JVMappingCD <JVMapping>
 
-// Init method from CoreData
+// Init method with CoreData
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary context:(NSManagedObjectContext *)context;
 
 @end
@@ -65,26 +66,30 @@
 
 /** Populate existing object with values from dictionary
  */
-+ (id) populateObject:(id)obj fromDictionary:(NSDictionary*)dict;
++ (id)populateObject:(id)obj fromDictionary:(NSDictionary *)dict;
 
 /** Create a new object with given class and populate it with value from dictionary
  */
-+ (id) objectWithClass:(Class)cls fromDictionary:(NSDictionary*)dict;
++ (id)objectWithClass:(Class)cls fromDictionary:(NSDictionary *)dict;
 
 
 #pragma mark - Convert plain object to dictionary
 
 /** Convert an object to a dictionary
  */
-+ (NSDictionary*) dictionaryForObject:(id)obj;
-+ (NSDictionary*) dictionaryForObject:(id)obj include:(NSArray*)includeArray;
-+ (NSMutableDictionary*) mutableDictionaryForObject:(id)obj;
-+ (NSMutableDictionary*) mutableDictionaryForObject:(id)obj include:(NSArray*)includeArray;
++ (NSDictionary *)dictionaryForObject:(id)obj;
+
++ (NSDictionary *)dictionaryForObject:(id)obj exclude:(NSArray *)excludeArray;
+
++ (NSMutableDictionary *)mutableDictionaryForObject:(id)obj;
+
++ (NSMutableDictionary *)mutableDictionaryForObject:(id)obj exclude:(NSArray *)excludeArray;
 
 /** Convert an array of dict to array of object with predefined class
  */
-+ (NSArray*)        arrayOfClass:(Class)cls        fromArrayOfDictionary:(NSArray*)array;
-+ (NSMutableArray*) mutableArrayOfClass:(Class)cls fromArrayOfDictionary:(NSArray*)array;
++ (NSArray *)arrayOfClass:(Class)cls fromArrayOfDictionary:(NSArray *)array;
+
++ (NSMutableArray *)mutableArrayOfClass:(Class)cls fromArrayOfDictionary:(NSArray *)array;
 
 
 #pragma mark - Populate array of class from data array with CoreData
@@ -95,7 +100,8 @@
 
 /** Convert an array of dict to array of object with predefined class with CoreData
  */
-+ (NSArray*)        arrayOfClass:(Class)cls        fromArrayOfDictionary:(NSArray*)array context:(NSManagedObjectContext *)context;
-+ (NSMutableArray*) mutableArrayOfClass:(Class)cls fromArrayOfDictionary:(NSArray*)array context:(NSManagedObjectContext *)context;
++ (NSArray *)arrayOfClass:(Class)cls fromArrayOfDictionary:(NSArray *)array context:(NSManagedObjectContext *)context;
+
++ (NSMutableArray *)mutableArrayOfClass:(Class)cls fromArrayOfDictionary:(NSArray *)array context:(NSManagedObjectContext *)context;
 /* */
 @end

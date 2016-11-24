@@ -9,7 +9,7 @@
 #import "NSObject+JVArchivable.h"
 #import "JVMapper.h"
 
-@implementation NSObject (RMArchivable)
+@implementation NSObject (JVArchivable)
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
     // Encode properties, other class variables, etc
@@ -18,8 +18,8 @@
     // Retrieve excluded properties
     NSArray *excludedProperties = nil;
     
-    if ([self respondsToSelector:@selector(rmExcludedProperties)]) {
-        excludedProperties = [self performSelector:@selector(rmExcludedProperties)];
+    if ([self respondsToSelector:@selector(jvExcludedProperties)]) {
+        excludedProperties = [self performSelector:@selector(jvExcludedProperties)];
     }
     
     for (NSString* key in propertyDict) {
@@ -38,8 +38,8 @@
         // Retrieve excluded properties
         NSArray *excludedProperties = nil;
         
-        if ([self respondsToSelector:@selector(rmExcludedProperties)]) {
-            excludedProperties = [self performSelector:@selector(rmExcludedProperties)];
+        if ([self respondsToSelector:@selector(jvExcludedProperties)]) {
+            excludedProperties = [self performSelector:@selector(jvExcludedProperties)];
         }
         
         for (NSString* key in propertyDict) {

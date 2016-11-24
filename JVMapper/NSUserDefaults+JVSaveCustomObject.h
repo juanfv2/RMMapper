@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSUserDefaults (RMSaveCustomObject)
+@interface NSUserDefaults (JVSaveCustomObject)
 
 
 /** Save to NSUserDefaults. The obj must be Archivable. Otherwise it would not be savable.
@@ -16,11 +16,11 @@
  
  Answer from http://stackoverflow.com/questions/2315948/how-to-store-custom-objects-in-nsuserdefaults/2315972#2315972
  */
--(void) rmSetCustomObject:(id)obj forKey:(NSString*)key;
+-(void) jvSetCustomObject:(id)obj forKey:(NSString*)key;
 
 
 /** Load to NSUserDefaults
  */
--(id) rmCustomObjectForKey:(NSString*)key;
+-(id) jvCustomObjectForKey:(NSString*)key;
 
 @end

@@ -10,7 +10,7 @@
 #import "JVMapper.h"
 
 
-@implementation NSObject (RMCopyable)
+@implementation NSObject (JVCopyable)
 
 -(instancetype)copyWithZone:(NSZone *)zone {
     typeof(self) copiedObj = [[[self class] allocWithZone:zone] init];
@@ -19,8 +19,8 @@
         // Retrieve excluded properties
         NSArray *excludedProperties = nil;
         
-        if ([self respondsToSelector:@selector(rmExcludedProperties)]) {
-            excludedProperties = [self performSelector:@selector(rmExcludedProperties)];
+        if ([self respondsToSelector:@selector(jvExcludedProperties)]) {
+            excludedProperties = [self performSelector:@selector(jvExcludedProperties)];
         }
         for (NSString* key in properties) {
             if (!excludedProperties || ![excludedProperties containsObject:key]) {
